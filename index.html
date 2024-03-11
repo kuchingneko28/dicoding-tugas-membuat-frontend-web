@@ -1,0 +1,61 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Buku</h1>
+      <p>Masukan buku baru</p>
+      <form id="form" action="">
+        <div class="input-box">
+          <label for="judul"><h4>Judul</h4></label>
+          <input id="judul" type="text" />
+        </div>
+        <div class="input-box">
+          <label for="penulis"><h4>Penulis</h4></label>
+          <input id="penulis" type="text" />
+        </div>
+        <div class="input-box">
+          <label for="tahun"><h4>Tahun</h4></label>
+          <input id="tahun" type="text" />
+        </div>
+        <button type="submit" class="button">Tambahkan Buku</button>
+      </form>
+    </div>
+    <div class="card">
+      <div class="buku-belum-selesai">
+        <h2>Belum selesai di baca</h2>
+        <div class="buku">
+          <h3>Harry Poter</h3>
+          <p>Jk rowling</p>
+          <p>1998</p>
+          <form action="">
+            <button class="selesai">Selesai Baca</button>
+            <button class="hapus">Hapus buku</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="buku-selsai">
+        <h2>Sudah selesai di baca</h2>
+        <div class="buku">
+          <h3>Harry Poter</h3>
+          <p>Jk rowling</p>
+          <p>1998</p>
+          <form action="">
+            <button class="selesai">Belum selesai baca</button>
+            <button class="hapus">Hapus buku</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="./js/script.js"></script>
+  </body>
+</html>
