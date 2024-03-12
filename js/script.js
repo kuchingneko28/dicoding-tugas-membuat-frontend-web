@@ -91,7 +91,7 @@ const buatBuku = (objectBuku) => {
 
   cardBuku.classList.add("buku");
   cardBuku.append(judulBuku, penulisBuku, tahunBuku);
-  cardBuku.setAttribute("id", `todo-${objectBuku.id}`);
+  cardBuku.setAttribute("id", `buku-${objectBuku.id}`);
   if (objectBuku.isCompleted) {
     const tombolUndo = document.createElement("button");
     tombolUndo.classList.add("button-belum-selesai");
