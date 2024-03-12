@@ -47,6 +47,7 @@ label {
   border: 1px solid black;
   padding: 8px;
   border-radius: 4px;
+  margin-block: 10px;
 }
 .buku-belum-selesai h2,
 .buku-selsai h2 {
@@ -64,8 +65,9 @@ label {
   box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, 0.15);
   font-weight: 600;
 }
-.buku-belum-selesai button,
-.buku-selsai button {
+.button-belum-selesai,
+.button-sudah-selesai,
+.button-hapus {
   padding: 8px 16px;
   border: none;
   outline: none;
@@ -78,11 +80,10 @@ label {
   font-weight: 600;
 }
 
-.buku-belum-selesai .selesai,
-.buku-selsai .selesai {
+.button-sudah-selesai,
+.button-belum-selesai {
   background-color: green;
 }
-.buku-belum-selesai .hapus,
-.buku-selsai .hapus {
+.button-hapus {
   background-color: red;
 }
