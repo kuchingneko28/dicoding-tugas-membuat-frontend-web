@@ -5,7 +5,7 @@ const SAVED_EVENT = "simpan-buku";
 const generateId = () => {
   return +new Date();
 };
-const jikaStorageAda = () => {
+const checkStorage = () => {
   if (typeof Storage === undefined) {
     alert("Browser kamu tidak mendukung local storage");
     return false;
@@ -27,21 +27,13 @@ const tambahBuku = () => {
   const tahun = document.getElementById("tahun").value;
   const penulis = document.getElementById("penulis").value;
   const generateID = generateId();
-  const objectBuku = generateObjectBuku(generateID, judul, tahun, penulis, false);
+  const objectBuku = generateObjectBuku(parseInt(generateID), judul, penulis, parseInt(tahun), false);
 
   rakBuku.push(objectBuku);
   document.dispatchEvent(new Event(RENDER_EVENT));
   simpanData();
 };
-const temukanBuku = (bukuId) => {
-  for (const buku of rakBuku) {
-    if (buku.id == bukuId) {
-      return buku;
-    }
-  }
-
-  return null;
-};
+const temukanBuku = (bukuId) => rakBuku.find((buku) => (buku.id === bukuId ? buku : null));
 const undoBukuDariSelesai = (bukuId) => {
   const targetBuku = temukanBuku(bukuId);
 
@@ -51,6 +43,7 @@ const undoBukuDariSelesai = (bukuId) => {
   document.dispatchEvent(new Event(RENDER_EVENT));
   simpanData();
 };
+
 const tambahBukuSelesai = (bukuId) => {
   const targetBuku = temukanBuku(bukuId);
   if (targetBuku == null) return;
@@ -77,6 +70,15 @@ const temukanIndexBuku = (bukuId) => {
   }
   return -1;
 };
+const buatButton = (innerText, classname, cb) => {
+  const button = document.createElement("button");
+  button.classList.add(classname);
+  button.innerText = innerText;
+  button.addEventListener("click", cb);
+
+  return button;
+};
+
 const buatBuku = (objectBuku) => {
   const judulBuku = document.createElement("h3");
   judulBuku.innerText = objectBuku.judul;
@@ -91,38 +93,32 @@ const buatBuku = (objectBuku) => {
 
   cardBuku.classList.add("buku");
   cardBuku.append(judulBuku, penulisBuku, tahunBuku);
-  cardBuku.setAttribute("id", `buku-${objectBuku.id}`);
+  cardBuku.setAttribute("id", `todo-${objectBuku.id}`);
   if (objectBuku.isCompleted) {
-    const tombolUndo = document.createElement("button");
-    tombolUndo.classList.add("button-belum-selesai");
-    tombolUndo.innerText = "Belum selesai dibaca";
-    tombolUndo.addEventListener("click", () => {
+    const tombolBelumSelesai = buatButton("Belum selesai dibaca", "button-belum-selesai", () => {
       undoBukuDariSelesai(objectBuku.id);
     });
 
-    const tombolHapus = document.createElement("button");
-    tombolHapus.classList.add("button-hapus");
-
-    tombolHapus.innerText = "Hapus buku";
-    tombolHapus.addEventListener("click", () => {
+    const tombolHapus = buatButton("Hapus buku", "button-hapus", () => {
       hapusBukuYangSelesai(objectBuku.id);
     });
-    cardBuku.append(tombolUndo, tombolHapus);
-  } else {
-    const tombolCek = document.createElement("button");
 
-    tombolCek.classList.add("button-sudah-selesai");
-    tombolCek.innerText = "Sudah selesai dibaca";
-    tombolCek.addEventListener("click", () => {
+    cardBuku.append(tombolBelumSelesai, tombolHapus);
+  } else {
+    const tombolCek = buatButton("Sudah selesai dibaca", "button-sudah-selesai", () => {
       tambahBukuSelesai(objectBuku.id);
     });
-    cardBuku.append(tombolCek);
+    const tombolHapus = buatButton("Hapus buku", "button-hapus", () => {
+      hapusBukuYangSelesai(objectBuku.id);
+    });
+    cardBuku.append(tombolCek, tombolHapus);
   }
   return cardBuku;
 };
 const muatBukuDariStorage = () => {
   const dataDariLocalStorage = localStorage.getItem(STORAGE_KEY);
   let parseBuku = JSON.parse(dataDariLocalStorage);
+
   if (parseBuku !== null) {
     for (const buku of parseBuku) {
       rakBuku.push(buku);
@@ -133,7 +129,7 @@ const muatBukuDariStorage = () => {
 };
 
 const simpanData = () => {
-  if (jikaStorageAda()) {
+  if (checkStorage()) {
     const parsed = JSON.stringify(rakBuku);
     localStorage.setItem(STORAGE_KEY, parsed);
     document.dispatchEvent(new Event(SAVED_EVENT));
@@ -156,7 +152,7 @@ document.addEventListener(RENDER_EVENT, () => {
 });
 document.addEventListener("DOMContentLoaded", () => {
   const submitForm = document.getElementById("form");
-  if (jikaStorageAda()) {
+  if (checkStorage()) {
     muatBukuDariStorage();
   }
   submitForm.addEventListener("submit", (event) => {
